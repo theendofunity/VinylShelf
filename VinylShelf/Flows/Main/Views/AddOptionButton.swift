@@ -50,10 +50,16 @@ struct AddOptionButton: View {
     
     let buttonType: ButtonType
     let action: EmptyClosure
+    let separator: Bool
     
-    init(buttonType: ButtonType, action: @escaping EmptyClosure) {
+    init(
+        buttonType: ButtonType,
+        separator: Bool = true,
+        action: @escaping EmptyClosure
+    ) {
         self.buttonType = buttonType
         self.action = action
+        self.separator = separator
     }
     
     var body: some View {
@@ -69,7 +75,7 @@ struct AddOptionButton: View {
                             .font(.title2)
                             .foregroundStyle(.black)
                         
-//                        Spacer()
+                        Spacer()
                     }
                     
                     if let description = buttonType.desctiption {
@@ -77,9 +83,11 @@ struct AddOptionButton: View {
                             .foregroundStyle(.gray)
                     }
                     
-                    RoundedRectangle(cornerRadius: 8)
-                        .frame(height: 1)
-                        .foregroundStyle(.gray)
+                    if separator {
+                        RoundedRectangle(cornerRadius: 8)
+                            .frame(height: 1)
+                            .foregroundStyle(.gray)
+                    }
                 }
             }
         }

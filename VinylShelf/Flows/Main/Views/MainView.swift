@@ -8,9 +8,9 @@
 import SwiftUI
 import SwiftData
 
-struct ContentView: View {
+struct MainView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var items: [Record]
     @State private var showSheet = false
 
     var body: some View {
@@ -18,9 +18,10 @@ struct ContentView: View {
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        Text(item.artist)
+                        Text(item.album)
                     } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        RecordCell(record: item)
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -64,13 +65,15 @@ struct ContentView: View {
         VStack(alignment: .leading, spacing: 16) {
             AddOptionButton(buttonType: .scan) {
                 showSheet = false
+                addTestItem()
             }
             
             AddOptionButton(buttonType: .search) {
                 showSheet = false
+                addTestItem()
             }
             
-            AddOptionButton(buttonType: .cancel) {
+            AddOptionButton(buttonType: .cancel, separator: false) {
                 showSheet = false
             }
         }
@@ -78,9 +81,16 @@ struct ContentView: View {
         .padding(.top, 24)
         .padding(.horizontal, 16)
     }
+    
+    private func addTestItem() {
+        withAnimation {
+            let newItem = Record(artist: "Artist", album: "Album")
+            modelContext.insert(newItem)
+        }
+    }
 }
 
 #Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+    MainView()
+        .modelContainer(for: Record.self, inMemory: true)
 }
