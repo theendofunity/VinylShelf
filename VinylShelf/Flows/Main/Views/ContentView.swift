@@ -11,6 +11,7 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
+    @State private var showSheet = false
 
     var body: some View {
         NavigationSplitView {
@@ -34,16 +35,21 @@ struct ContentView: View {
                     }
                 }
             }
+            .navigationTitle(Texts.mainTitle)
         } detail: {
             Text("Select an item")
+        }
+        .sheet(isPresented: $showSheet) {
+            addBottomSheet()
         }
     }
 
     private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
+        showSheet = true
+//        withAnimation {
+//            let newItem = Item(timestamp: Date())
+//            modelContext.insert(newItem)
+//        }
     }
 
     private func deleteItems(offsets: IndexSet) {
@@ -52,6 +58,25 @@ struct ContentView: View {
                 modelContext.delete(items[index])
             }
         }
+    }
+    
+    @ViewBuilder private func addBottomSheet() -> some View{
+        VStack(alignment: .leading, spacing: 16) {
+            AddOptionButton(buttonType: .scan) {
+                showSheet = false
+            }
+            
+            AddOptionButton(buttonType: .search) {
+                showSheet = false
+            }
+            
+            AddOptionButton(buttonType: .cancel) {
+                showSheet = false
+            }
+        }
+        .presentationDetents([.fraction(0.25)])
+        .padding(.top, 24)
+        .padding(.horizontal, 16)
     }
 }
 
