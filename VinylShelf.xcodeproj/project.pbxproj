@@ -10,9 +10,22 @@
 		BCA3B1E82FA4EC3300F0D8AC /* VinylShelf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VinylShelf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		BCA3B2162FA51D2300F0D8AC /* Exceptions for "VinylShelf" folder in "VinylShelf" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = BCA3B1E72FA4EC3300F0D8AC /* VinylShelf */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BCA3B1EA2FA4EC3300F0D8AC /* VinylShelf */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BCA3B2162FA51D2300F0D8AC /* Exceptions for "VinylShelf" folder in "VinylShelf" target */,
+			);
 			path = VinylShelf;
 			sourceTree = "<group>";
 		};
@@ -256,6 +269,8 @@
 				DEVELOPMENT_TEAM = 29V6UG89NF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VinylShelf/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera permission to scan barcode of record";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -292,6 +307,8 @@
 				DEVELOPMENT_TEAM = 29V6UG89NF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VinylShelf/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera permission to scan barcode of record";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

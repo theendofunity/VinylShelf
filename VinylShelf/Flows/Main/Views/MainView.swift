@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  MainView.swift
 //  VinylShelf
 //
 //  Created by ddudkin on 1. 5. 2026..
@@ -10,28 +10,32 @@ import SwiftData
 
 struct MainView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Record]
-    @State private var showSheet = false
+    @Query private var records: [Record]
+    @State private var viewModel = MainViewModel()
 
     var body: some View {
         NavigationSplitView {
             List {
-                ForEach(items) { item in
+                ForEach(records) { record in
                     NavigationLink {
-                        Text(item.artist)
-                        Text(item.album)
+                        Text(record.artist)
+                        Text(record.album)
                     } label: {
-                        RecordCell(record: item)
+                        RecordCell(record: record)
                     }
                 }
-                .onDelete(perform: deleteItems)
+                .onDelete { offsets in
+                    viewModel.deleteItems(offsets: offsets, from: records, in: modelContext)
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
                 ToolbarItem {
-                    Button(action: addItem) {
+                    Button {
+                        viewModel.showAddSheet()
+                    } label: {
                         Label("Add Item", systemImage: "plus")
                     }
                 }
@@ -40,53 +44,30 @@ struct MainView: View {
         } detail: {
             Text("Select an item")
         }
-        .sheet(isPresented: $showSheet) {
+        .sheet(isPresented: $viewModel.showSheet) {
             addBottomSheet()
         }
     }
 
-    private func addItem() {
-        showSheet = true
-//        withAnimation {
-//            let newItem = Item(timestamp: Date())
-//            modelContext.insert(newItem)
-//        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
-    }
-    
-    @ViewBuilder private func addBottomSheet() -> some View{
+    @ViewBuilder private func addBottomSheet() -> some View {
         VStack(alignment: .leading, spacing: 16) {
             AddOptionButton(buttonType: .scan) {
-                showSheet = false
-                addTestItem()
+                viewModel.dismissSheet()
+                viewModel.addTestItem(in: modelContext)
             }
-            
+
             AddOptionButton(buttonType: .search) {
-                showSheet = false
-                addTestItem()
+                viewModel.dismissSheet()
+                viewModel.addTestItem(in: modelContext)
             }
-            
+
             AddOptionButton(buttonType: .cancel, separator: false) {
-                showSheet = false
+                viewModel.dismissSheet()
             }
         }
         .presentationDetents([.fraction(0.25)])
         .padding(.top, 24)
         .padding(.horizontal, 16)
-    }
-    
-    private func addTestItem() {
-        withAnimation {
-            let newItem = Record(artist: "Artist", album: "Album")
-            modelContext.insert(newItem)
-        }
     }
 }
 
