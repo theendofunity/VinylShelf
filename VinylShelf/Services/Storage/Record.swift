@@ -40,3 +40,20 @@ final class Record {
         self.tracklist = tracklist
     }
 }
+
+extension Record {
+    static func sample() -> Record {
+        .init(
+            artist: "Nirvana",
+            album: "Nevermind",
+            year: 1991,
+            country: "US",
+            label: "DGC Records",
+            tracklist: [
+                "1. Smells Like Teen Spirit (5:01)",
+                "2. In Bloom (4:14)",
+                "3. Come as You Are (3:38)"
+            ]
+        )
+    }
+}

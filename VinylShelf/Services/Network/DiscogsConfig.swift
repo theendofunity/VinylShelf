@@ -108,15 +108,24 @@ final class DiscogsClient {
         request.httpMethod = "GET"
         request.setValue(config.userAgent, forHTTPHeaderField: "User-Agent")
 
+        print("→ \(request.httpMethod ?? "GET") \(url)")
+
         let (data, response) = try await session.data(for: request)
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw DiscogsError.invalidResponse
         }
 
+        print("← \(httpResponse.statusCode) \(url.path)")
+
         guard (200...299).contains(httpResponse.statusCode) else {
+            if let body = String(data: data, encoding: .utf8) {
+                print("← body: \(body)")
+            }
             throw DiscogsError.httpError(httpResponse.statusCode)
         }
+
+        print("← body: \(String(data: data, encoding: .utf8) ?? "<non-utf8>")")
 
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase

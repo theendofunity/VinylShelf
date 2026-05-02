@@ -15,6 +15,7 @@ final class MainViewModel {
     var showScanner = false
     var isLoadingRecord = false
     var scanError: Error?
+    var pendingRecord: Record?
 
     private let discogs = DiscogsClient(
         config: DiscogsConfig(
@@ -42,17 +43,16 @@ final class MainViewModel {
         showScanner = false
     }
 
-    func handleScannedBarcode(_ barcode: String, in context: ModelContext) {
+    func handleScannedBarcode(_ barcode: String) {
         showScanner = false
         isLoadingRecord = true
         scanError = nil
 
-        var formattedBarcode: String = barcode
-        
+        var formattedBarcode = barcode
         if formattedBarcode.first == "0" {
             formattedBarcode.removeFirst()
         }
-        
+
         Task {
             do {
                 let results = try await discogs.searchRelease(barcode: formattedBarcode)
@@ -60,15 +60,24 @@ final class MainViewModel {
                     throw DiscogsError.emptyResult
                 }
                 let release = try await discogs.release(id: first.id)
-                let record = record(from: release, fallbackSearchResult: first)
-                withAnimation {
-                    context.insert(record)
-                }
+                pendingRecord = record(from: release, fallbackSearchResult: first)
             } catch {
                 scanError = error
             }
             isLoadingRecord = false
         }
+    }
+
+    func saveRecord(in context: ModelContext) {
+        guard let record = pendingRecord else { return }
+        withAnimation {
+            context.insert(record)
+        }
+        pendingRecord = nil
+    }
+
+    func discardRecord() {
+        pendingRecord = nil
     }
 
     func addTestItem(in context: ModelContext) {

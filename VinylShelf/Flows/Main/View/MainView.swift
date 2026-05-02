@@ -46,11 +46,16 @@ struct MainView: View {
         }
         .fullScreenCover(isPresented: $viewModel.showScanner) {
             BarcodeScannerView {
-                viewModel.handleScannedBarcode($0, in: modelContext)
+                viewModel.handleScannedBarcode($0)
             } onCancel: {
                 viewModel.dismissScanner()
             }
             .ignoresSafeArea()
+        }
+        .fullScreenCover(item: $viewModel.pendingRecord) { record in
+            SuccessScanView(record: record) {
+                viewModel.saveRecord(in: modelContext)
+            }
         }
         .overlay {
             if viewModel.isLoadingRecord {
