@@ -69,7 +69,7 @@ struct RecordDetailsContentView: View {
                     Divider()
 
                     VStack(alignment: .leading, spacing: 0) {
-                        Text("Tracklist")
+                        Text(Texts.recordDetailsTracklist)
                             .font(.headline)
                             .padding(.horizontal)
                             .padding(.vertical, 12)

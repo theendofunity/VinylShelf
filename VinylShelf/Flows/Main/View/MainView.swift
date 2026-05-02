@@ -65,7 +65,7 @@ struct MainView: View {
                         ProgressView()
                             .tint(.white)
                             .scaleEffect(1.5)
-                        Text("Looking up record…")
+                        Text(Texts.scanLookingUp)
                             .foregroundStyle(.white)
                             .font(.subheadline)
                     }
@@ -74,11 +74,11 @@ struct MainView: View {
                 }
             }
         }
-        .alert("Record Not Found", isPresented: Binding(
+        .alert(Texts.scanErrorTitle, isPresented: Binding(
             get: { viewModel.scanError != nil },
             set: { if !$0 { viewModel.scanError = nil } }
         )) {
-            Button("OK", role: .cancel) { viewModel.scanError = nil }
+            Button(Texts.scanErrorOK, role: .cancel) { viewModel.scanError = nil }
         } message: {
             Text(viewModel.scanError.map { errorMessage($0) } ?? "")
         }
@@ -87,9 +87,9 @@ struct MainView: View {
     private func errorMessage(_ error: Error) -> String {
         if let discogsError = error as? DiscogsError {
             switch discogsError {
-            case .emptyResult: return "No record found for this barcode."
-            case .httpError(let code): return "Discogs API error (\(code))."
-            default: return "Could not fetch record details."
+            case .emptyResult: return Texts.scanErrorEmpty
+            case .httpError(let code): return Texts.scanErrorHTTP(code)
+            default: return Texts.scanErrorNetwork
             }
         }
         return error.localizedDescription
