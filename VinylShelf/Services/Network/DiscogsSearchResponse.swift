@@ -15,7 +15,7 @@ struct DiscogsSearchResponse: Decodable {
 struct DiscogsSearchResult: Decodable, Identifiable {
     let id: Int
     let title: String?
-    let year: Int?
+    let year: String?
     let country: String?
     let thumb: String?
     let coverImage: String?

@@ -10,11 +10,13 @@ import Foundation
 // MARK: - Config
 
 struct DiscogsConfig {
-    let token: String
+    let key: String
+    let secret: String
     let userAgent: String
 
-    init(token: String, appName: String, appVersion: String) {
-        self.token = token
+    init(key: String, secret: String, appName: String, appVersion: String) {
+        self.key = key
+        self.secret = secret
         self.userAgent = "\(appName)/\(appVersion)"
     }
 }
@@ -94,7 +96,8 @@ final class DiscogsClient {
         )
 
         components?.queryItems = queryItems + [
-            .init(name: "token", value: config.token)
+            .init(name: "key", value: config.key),
+            .init(name: "secret", value: config.secret)
         ]
 
         guard let url = components?.url else {
