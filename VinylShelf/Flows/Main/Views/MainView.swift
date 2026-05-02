@@ -47,13 +47,20 @@ struct MainView: View {
         .sheet(isPresented: $viewModel.showSheet) {
             addBottomSheet()
         }
+        .fullScreenCover(isPresented: $viewModel.showScanner) {
+            BarcodeScannerView {
+                viewModel.handleScannedBarcode($0, in: modelContext)
+            } onCancel: {
+                viewModel.dismissScanner()
+            }
+            .ignoresSafeArea()
+        }
     }
 
     @ViewBuilder private func addBottomSheet() -> some View {
         VStack(alignment: .leading, spacing: 16) {
             AddOptionButton(buttonType: .scan) {
-                viewModel.dismissSheet()
-                viewModel.addTestItem(in: modelContext)
+                viewModel.openScanner()
             }
 
             AddOptionButton(buttonType: .search) {

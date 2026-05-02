@@ -11,6 +11,7 @@ import SwiftData
 @Observable
 final class MainViewModel {
     var showSheet = false
+    var showScanner = false
 
     func showAddSheet() {
         showSheet = true
@@ -18,6 +19,24 @@ final class MainViewModel {
 
     func dismissSheet() {
         showSheet = false
+    }
+
+    func openScanner() {
+        showSheet = false
+        showScanner = true
+    }
+
+    func dismissScanner() {
+        showScanner = false
+    }
+
+    func handleScannedBarcode(_ barcode: String, in context: ModelContext) {
+        showScanner = false
+        // TODO: look up the barcode via DiscogsClient and insert the result
+        withAnimation {
+            let newItem = Record(artist: "Unknown", album: barcode)
+            context.insert(newItem)
+        }
     }
 
     func addTestItem(in context: ModelContext) {

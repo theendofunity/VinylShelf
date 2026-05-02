@@ -12,4 +12,5 @@ enum Texts {
     static let addBottomSheetScanDescription = "Scan barcode from your record"
     static let addBottomSheetSearchDescription = "Manual search by artist and album"
     static let cancel = "Cancel"
+    static let scannerHint = "Align the barcode within the frame"
 }
