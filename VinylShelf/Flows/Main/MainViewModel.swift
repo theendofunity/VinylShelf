@@ -76,7 +76,7 @@ final class MainViewModel {
 
     func addTestItem(in context: ModelContext) {
         withAnimation {
-            let newItem = Record(artist: "Artist", album: "Album")
+            let newItem = Record(artist: "Long artust name", album: "Long album name Album")
             context.insert(newItem)
         }
     }

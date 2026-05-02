@@ -12,12 +12,24 @@ struct RecordCell: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
-                Image("coverPlaceholder")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                AsyncImage(url: record.cover) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    case .failure, .empty:
+                        Image("coverPlaceholder")
+                            .resizable()
+                    @unknown default:
+                        Image("coverPlaceholder")
+                            .resizable()
+                    }
+                }
+                .frame(width: 100, height: 100)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
                 
-                VStack {
+            VStack(alignment: .leading) {
                     Text(record.artist)
                         .font(.headline)
                     Text(record.album)
@@ -31,5 +43,5 @@ struct RecordCell: View {
 }
 
 #Preview {
-    RecordCell(record: .init(artist: "Artist", album: "Album"))
+    RecordCell(record: .init(artist: "lonf nasda Artist", album: "Album lonf "))
 }
