@@ -69,27 +69,28 @@ struct AddOptionButton: View {
                     HStack {
                         Image(systemName: buttonType.imageName)
                             .font(.title2)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.primary)
                         
                         Text(buttonType.title)
                             .font(.title2)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.primary)
                         
                         Spacer()
                     }
                     
                     if let description = buttonType.desctiption {
                         Text(description)
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(.secondary)
                     }
                     
                     if separator {
                         RoundedRectangle(cornerRadius: 8)
                             .frame(height: 1)
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(.separator)
                     }
                 }
             }
+            .foregroundStyle(.primary)
         }
     }
 }
