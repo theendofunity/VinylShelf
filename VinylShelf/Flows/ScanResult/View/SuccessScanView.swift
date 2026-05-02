@@ -46,14 +46,22 @@ struct SuccessScanView: View {
                     onSave()
                     dismiss()
                 } label: {
-                    Label("Save to Collection", systemImage: "plus.circle.fill")
-                        .frame(maxWidth: .infinity)
+                    Label(
+                        Texts.successScanAddToCollectionButton,
+                        systemImage: "plus.circle.fill"
+                    )
+                    .frame(
+                        maxWidth: .infinity
+                    )
                 }
                 .buttonStyle(.glassProminent)
 
                 Button {
                 } label: {
-                    Label("Add to Wishlist", systemImage: "heart")
+                    Label(
+                        Texts.successScanAddToWishlistButton,
+                        systemImage: "heart"
+                    )
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.glass)

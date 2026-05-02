@@ -9,7 +9,14 @@ import SwiftUI
 
 struct RecordDetailsContentView: View {
     let record: Record
-    
+    @Environment(\.openURL) private var openURL
+
+    private var spotifySearchURL: URL? {
+        let query = "\(record.artist) \(record.album)"
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        return URL(string: "https://open.spotify.com/search/\(query)")
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
@@ -38,6 +45,23 @@ struct RecordDetailsContentView: View {
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .padding(.top, 4)
+
+                    if let url = spotifySearchURL {
+                        Button {
+                            openURL(url)
+                        } label: {
+                            Label(
+                                Texts.recordDetailsSpotifyButton,
+                                systemImage: "music.note"
+                            )
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .background(Color(red: 0.11, green: 0.73, blue: 0.33), in: Capsule())
+                        }
+                        .padding(.top, 8)
+                    }
                 }
                 .padding()
 

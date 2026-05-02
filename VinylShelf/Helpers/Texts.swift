@@ -14,4 +14,7 @@ enum Texts {
     static let addBottomSheetSearchDescription = "Manual search by artist and album"
     static let cancel = "Cancel"
     static let scannerHint = "Align the barcode within the frame"
+    static let recordDetailsSpotifyButton = "Open in Spotify"
+    static let successScanAddToCollectionButton = "Save to Collection"
+    static let successScanAddToWishlistButton = "Add to Wishlist"
 }
