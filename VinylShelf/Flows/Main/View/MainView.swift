@@ -14,12 +14,11 @@ struct MainView: View {
     @State private var viewModel = MainViewModel()
 
     var body: some View {
-        NavigationSplitView {
+        NavigationStack {
             List {
                 ForEach(records) { record in
                     NavigationLink {
-                        Text(record.artist)
-                        Text(record.album)
+                        RecordDetailsView(record: record)
                     } label: {
                         RecordCell(record: record)
                     }
@@ -41,8 +40,6 @@ struct MainView: View {
                 }
             }
             .navigationTitle(Texts.mainTitle)
-        } detail: {
-            Text("Select an item")
         }
         .sheet(isPresented: $viewModel.showSheet) {
             addBottomSheet()

@@ -7,6 +7,7 @@
 
 enum Texts {
     static let mainTitle: String = "Collection"
+    static let detailsTitle: String = "Explore"
     static let addBottomSheetScan = "Scan"
     static let addBottomSheetSearch = "Search"
     static let addBottomSheetScanDescription = "Scan barcode from your record"

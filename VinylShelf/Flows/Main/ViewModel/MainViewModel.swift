@@ -59,13 +59,10 @@ final class MainViewModel {
                 guard let first = results.first else {
                     throw DiscogsError.emptyResult
                 }
-                let (artist, album) = parseDiscogsTitle(first.title ?? formattedBarcode)
-                let coverURL = [first.coverImage, first.thumb]
-                    .compactMap { $0 }
-                    .compactMap(URL.init)
-                    .first
+                let release = try await discogs.release(id: first.id)
+                let record = record(from: release, fallbackSearchResult: first)
                 withAnimation {
-                    context.insert(Record(cover: coverURL, artist: artist, album: album))
+                    context.insert(record)
                 }
             } catch {
                 scanError = error
@@ -87,6 +84,43 @@ final class MainViewModel {
                 context.delete(records[index])
             }
         }
+    }
+
+    private func record(from release: DiscogsRelease, fallbackSearchResult: DiscogsSearchResult) -> Record {
+        let artist = release.artists?.first?.name
+            ?? parseDiscogsTitle(fallbackSearchResult.title ?? release.title).artist
+
+        let coverURL = release.images?
+            .first(where: { $0.type == "primary" })
+            .flatMap { $0.uri.flatMap(URL.init) }
+            ?? [fallbackSearchResult.coverImage, fallbackSearchResult.thumb]
+                .compactMap { $0 }
+                .compactMap(URL.init)
+                .first
+
+        let tracklist = (release.tracklist ?? [])
+            .filter { $0.trackType == "track" || $0.trackType == nil }
+            .map { track -> String in
+                var entry = [track.position, track.title]
+                    .compactMap { $0 }
+                    .filter { !$0.isEmpty }
+                    .joined(separator: ". ")
+                if let duration = track.duration, !duration.isEmpty {
+                    entry += " (\(duration))"
+                }
+                return entry
+            }
+
+        return Record(
+            discogsId: release.id,
+            cover: coverURL,
+            artist: artist,
+            album: release.title,
+            year: release.year,
+            country: release.country,
+            label: release.labels?.first?.name,
+            tracklist: tracklist
+        )
     }
 
     // Discogs search titles are formatted as "Artist - Album Title"

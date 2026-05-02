@@ -84,9 +84,7 @@ struct AddOptionButton: View {
                     }
                     
                     if separator {
-                        RoundedRectangle(cornerRadius: 8)
-                            .frame(height: 1)
-                            .foregroundStyle(.separator)
+                        Divider()
                     }
                 }
             }

@@ -41,6 +41,12 @@ struct DiscogsTrack: Decodable {
     let position: String?
     let title: String?
     let duration: String?
+    let trackType: String?
+
+    enum CodingKeys: String, CodingKey {
+        case position, title, duration
+        case trackType = "type_"
+    }
 }
 
 struct DiscogsImage: Decodable {
