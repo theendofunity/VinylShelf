@@ -37,14 +37,14 @@ struct RandomizerView: View {
             case .loading:
                 Spacer()
                 
-                ProgressView("Selecting record")
+                ProgressView(Texts.randomizerLoader)
                     .progressViewStyle(CircularProgressViewStyle(tint: .blue))
                     .scaleEffect(2.0, anchor: .center)
                 
                 Spacer()
 
             case let .ready(record):
-                Text("Your random record")
+                Text(Texts.randomizerTitle)
                     .font(.title)
                 
 
@@ -68,7 +68,7 @@ struct RandomizerView: View {
                         await viewModel.load()
                     }
                 } label: {
-                    Text("Try again")
+                    Text(Texts.tryAgainButton)
                         .frame(maxWidth: .infinity)
                 }
                 .padding(.horizontal, 16)
