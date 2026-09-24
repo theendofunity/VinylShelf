@@ -56,15 +56,15 @@ struct SuccessScanView: View {
                 }
                 .buttonStyle(.glassProminent)
 
-                Button {
-                } label: {
-                    Label(
-                        Texts.successScanAddToWishlistButton,
-                        systemImage: "heart"
-                    )
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.glass)
+//                Button {
+//                } label: {
+//                    Label(
+//                        Texts.successScanAddToWishlistButton,
+//                        systemImage: "heart"
+//                    )
+//                        .frame(maxWidth: .infinity)
+//                }
+//                .buttonStyle(.glass)
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 32)

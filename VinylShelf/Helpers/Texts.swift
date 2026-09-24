@@ -29,4 +29,9 @@ enum Texts {
 
     static let successScanAddToCollectionButton = "Save to Collection"
     static let successScanAddToWishlistButton = "Add to Wishlist"
+    
+    static let randomizerLoader = "Selecting record"
+    static let randomizerTitle = "Your random record"
+    static let tryAgainButton = "Try again"
+
 }

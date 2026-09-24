@@ -11,7 +11,8 @@ import SwiftData
 @Observable
 @MainActor
 final class MainViewModel {
-    var showSheet = false
+    var isAddSheetVisible = false
+    var isRandomizerVisible = false
     var showScanner = false
     var isLoadingRecord = false
     var scanError: Error?
@@ -27,20 +28,24 @@ final class MainViewModel {
     )
 
     func showAddSheet() {
-        showSheet = true
+        isAddSheetVisible = true
     }
 
     func dismissSheet() {
-        showSheet = false
+        isAddSheetVisible = false
     }
 
     func openScanner() {
-        showSheet = false
+        isAddSheetVisible = false
         showScanner = true
     }
 
     func dismissScanner() {
         showScanner = false
+    }
+    
+    func showRandomizer() {
+        isRandomizerVisible = true
     }
 
     func handleScannedBarcode(_ barcode: String) {

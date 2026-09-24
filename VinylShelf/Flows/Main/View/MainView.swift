@@ -28,6 +28,11 @@ struct MainView: View {
                 }
             }
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("", systemImage: "dice") {
+                        viewModel.showRandomizer()
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
@@ -41,8 +46,11 @@ struct MainView: View {
             }
             .navigationTitle(Texts.mainTitle)
         }
-        .sheet(isPresented: $viewModel.showSheet) {
+        .sheet(isPresented: $viewModel.isAddSheetVisible) {
             addBottomSheet()
+        }
+        .sheet(isPresented: $viewModel.isRandomizerVisible) {
+            RandomizerView(viewModel: .init(records: records))
         }
         .fullScreenCover(isPresented: $viewModel.showScanner) {
             BarcodeScannerView {
