@@ -29,7 +29,7 @@ final class RandomizerViewModel: ObservableObject {
     
     func load() async {
         state = .loading
-        await try? Task.sleep(nanoseconds: 300000000)
+        try? await Task.sleep(for: .seconds(3))
         
         guard let record = records.randomElement() else {
             return
