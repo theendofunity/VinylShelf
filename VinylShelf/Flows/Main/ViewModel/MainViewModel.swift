@@ -17,7 +17,8 @@ final class MainViewModel {
     var isLoadingRecord = false
     var scanError: Error?
     var pendingRecord: Record?
-
+    var isWishlist: Bool = false
+    
     private let discogs = DiscogsClient(
         config: DiscogsConfig(
             key: Secrets.discogsKey,
@@ -27,6 +28,10 @@ final class MainViewModel {
         )
     )
 
+    func visibleRecords(collection: [Record], wishlist: [Record]) -> [Record] {
+        isWishlist ? wishlist : collection
+    }
+    
     func showAddSheet() {
         isAddSheetVisible = true
     }
@@ -73,8 +78,9 @@ final class MainViewModel {
         }
     }
 
-    func saveRecord(in context: ModelContext) {
+    func saveRecord(in context: ModelContext, isWishlist: Bool) {
         guard let record = pendingRecord else { return }
+        record.isInWishlist = isWishlist
         withAnimation {
             context.insert(record)
         }

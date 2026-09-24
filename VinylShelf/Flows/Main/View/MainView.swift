@@ -10,13 +10,32 @@ import SwiftData
 
 struct MainView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var records: [Record]
+    @Query(filter: #Predicate<Record> { $0.isInWishlist == false })
+    private var collectionRecords: [Record]
+    @Query(filter: #Predicate<Record> { $0.isInWishlist == true })
+    private var wishlistRecords: [Record]
     @State private var viewModel = MainViewModel()
+
+    private var visibleRecords: [Record] {
+        viewModel.visibleRecords(
+            collection: collectionRecords,
+            wishlist: wishlistRecords
+        )
+    }
 
     var body: some View {
         NavigationStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Toggle("Wishlist", systemImage: "heart", isOn: $viewModel.isWishlist)
+
+                Text(Texts.recordsCount(visibleRecords.count))
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal)
+            
             List {
-                ForEach(records) { record in
+                ForEach(visibleRecords) { record in
                     NavigationLink {
                         RecordDetailsView(record: record)
                     } label: {
@@ -24,7 +43,7 @@ struct MainView: View {
                     }
                 }
                 .onDelete { offsets in
-                    viewModel.deleteItems(offsets: offsets, from: records, in: modelContext)
+                    viewModel.deleteItems(offsets: offsets, from: visibleRecords, in: modelContext)
                 }
             }
             .toolbar {
@@ -44,13 +63,13 @@ struct MainView: View {
                     }
                 }
             }
-            .navigationTitle(Texts.mainTitle)
+            .navigationTitle(viewModel.isWishlist ? Texts.wishlistTitle : Texts.mainTitle)
         }
         .sheet(isPresented: $viewModel.isAddSheetVisible) {
             addBottomSheet()
         }
         .sheet(isPresented: $viewModel.isRandomizerVisible) {
-            RandomizerView(viewModel: .init(records: records))
+            RandomizerView(viewModel: .init(records: visibleRecords))
         }
         .fullScreenCover(isPresented: $viewModel.showScanner) {
             BarcodeScannerView {
@@ -61,8 +80,8 @@ struct MainView: View {
             .ignoresSafeArea()
         }
         .fullScreenCover(item: $viewModel.pendingRecord) { record in
-            SuccessScanView(record: record) {
-                viewModel.saveRecord(in: modelContext)
+            SuccessScanView(record: record) { isWishlist in
+                viewModel.saveRecord(in: modelContext, isWishlist: isWishlist)
             }
         }
         .overlay {

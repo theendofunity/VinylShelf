@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SuccessScanView: View {
     let record: Record
-    let onSave: () -> Void
+    let onSave: (_ isWishlist: Bool) -> Void
+
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -43,7 +44,7 @@ struct SuccessScanView: View {
 
             VStack(spacing: 12) {
                 Button {
-                    onSave()
+                    onSave(false)
                     dismiss()
                 } label: {
                     Label(
@@ -56,15 +57,17 @@ struct SuccessScanView: View {
                 }
                 .buttonStyle(.glassProminent)
 
-//                Button {
-//                } label: {
-//                    Label(
-//                        Texts.successScanAddToWishlistButton,
-//                        systemImage: "heart"
-//                    )
-//                        .frame(maxWidth: .infinity)
-//                }
-//                .buttonStyle(.glass)
+                Button {
+                    onSave(true)
+                    dismiss()
+                } label: {
+                    Label(
+                        Texts.successScanAddToWishlistButton,
+                        systemImage: "heart"
+                    )
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.glass)
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 32)
@@ -81,5 +84,5 @@ struct SuccessScanView: View {
 }
 
 #Preview {
-    SuccessScanView(record: .sample()) {}
+    SuccessScanView(record: .sample(), onSave: {isWishlist in })
 }

@@ -19,6 +19,7 @@ final class Record {
     var country: String?
     var label: String?
     var tracklist: [String]
+    var isInWishlist: Bool = false 
 
     init(
         discogsId: Int? = nil,
@@ -28,7 +29,8 @@ final class Record {
         year: Int? = nil,
         country: String? = nil,
         label: String? = nil,
-        tracklist: [String] = []
+        tracklist: [String] = [],
+        isInWishlist: Bool = false
     ) {
         self.discogsId = discogsId
         self.cover = cover
@@ -38,6 +40,7 @@ final class Record {
         self.country = country
         self.label = label
         self.tracklist = tracklist
+        self.isInWishlist = isInWishlist
     }
 }
 
